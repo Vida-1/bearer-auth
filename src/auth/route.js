@@ -46,4 +46,4 @@ async function signin(req, res, next) {
   }
 }
 
-module.exports = { authRoutes };
+module.exports = { authRoutes, signup, signin };
