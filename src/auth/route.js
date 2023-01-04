@@ -2,6 +2,8 @@ const express = require('express');
 const base64 = require('base-64');
 const { User } = require('../models');
 
+const jwt = require('jsonwebtoken');
+
 const authRoutes = express();
 
 // Make a POST request to the/signup route with username and password.
@@ -36,10 +38,12 @@ async function signin(req, res, next) {
   const [username, password] = authorization.split(':');
   let user = await User.findLoggedIn(username, password);
   if (user) {
-    res.status(200).send({ username: user.username });
+    const data = { username: user.username };
+    const token = jwt.sign( data, 'shhhh');
+    res.status(200).send({ jsonWebToken });
   } else {
     next(new Error('Invalid login'));
   }
 }
 
-module.exports = { authRoutes };
+module.exports = { authRoutes, signup, signin };
